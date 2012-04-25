@@ -96,10 +96,10 @@ RUBY = ruby
 EOS
     end
   when 'Mac\ OS\ X'
-    Path.check_cmd('gcc-mp-4.3', 'make')
+    Path.check_cmd('gcc', 'make')
     Config::CONFIG << <<EOS
-CC = gcc-mp-4.3
-LD = gcc-mp-4.3
+CC = gcc
+LD = gcc
 CFLAGS = -fPIC
 INCDIRS += -Iinclude -I#{java_home}/include
 SO = jnilib

@@ -85,13 +85,19 @@ public class LibraryLoader {
             fatJarLibraryPathNonUnified("static", flavor),
             fatJarLibraryPath("dynamic", flavor),
             fatJarLibraryPathNonUnified("dynamic", flavor),
+            fatJarLibraryPathNoLinkage(flavor),
+            fatJarLibraryPathNoLinkageNoLib(flavor)
         };
 
         InputStream is = findLibrary(paths, libname);
 
         // Oh man, have to get out of here!
         if (is == null) {
-            throw new UnsatisfiedLinkError("Couldn't find the resource " + libname + ".");
+        	String res = "";
+        	for (String path: paths) {
+        		res = res + path + "\n";
+			}
+            throw new UnsatisfiedLinkError("Couldn't find the resource " + libname + res + ".");
         }
 
         logger.config("Loading " + libname + " from " + libpath + ".");
@@ -136,6 +142,28 @@ public class LibraryLoader {
         String os_name = System.getProperty("os.name");
         String os_arch = System.getProperty("os.arch");
         String path = sep + "lib" + sep + linkage + sep + os_name + sep + os_arch + sep;
+        if (null != flavor)
+            path += flavor + sep;
+        return path;
+    }
+
+	/** Full path without linkages. */
+    private String fatJarLibraryPathNoLinkage(String flavor) {
+        String sep = "/"; //System.getProperty("file.separator");
+        String os_name = System.getProperty("os.name");
+        String os_arch = System.getProperty("os.arch");
+        String path = sep + "lib" + sep + os_name + sep + os_arch + sep;
+        if (null != flavor)
+            path += flavor + sep;
+        return path;
+    }
+
+	/** Full path without linkages or lib-prefix. */
+    private String fatJarLibraryPathNoLinkageNoLib(String flavor) {
+        String sep = "/"; //System.getProperty("file.separator");
+        String os_name = System.getProperty("os.name");
+        String os_arch = System.getProperty("os.arch");
+        String path = sep + os_name + sep + os_arch + sep;
         if (null != flavor)
             path += flavor + sep;
         return path;

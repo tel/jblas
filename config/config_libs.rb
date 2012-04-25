@@ -91,7 +91,7 @@ configure :libpath => 'OS_NAME' do
     CONFIG[:libpath] = $opts[:libpath].split(':')
   else
     if CONFIG['OS_NAME'] == 'Mac\ OS\ X'
-      CONFIG[:libpath] = ['/opt/local/lib']
+      CONFIG[:libpath] = %w(/usr/lib /usr/local/lib)
     else
       CONFIG[:libpath] = %w(/usr/lib /lib /usr/lib/sse2)
     end
@@ -160,9 +160,9 @@ EOS
         CONFIG['LOADLIBES'] += ['-l:libgfortran.a']
       end
     end
-    if CONFIG['OS_NAME'] == 'Mac\ OS\ X'
-      CONFIG['LOADLIBES'] += ['/opt/local/lib/gcc43/libgfortran.a']
-    end 
+	if CONFIG['OS_NAME'] == 'Mac\ OS\ X'
+	  CONFIG['LOADLIBES'] += ['/usr/local/lib/libgfortran.dylib']
+	end 
   end
   ok
 end
